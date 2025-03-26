@@ -5,6 +5,7 @@ const cors = require('cors');
 const path = require('path');
 
 const employeeRoutes = require('./routes/employeeRoutes');
+const assignmentRoutes = require('./routes/assignmentRoutes');
 
 const { open } = require('sqlite');
 const sqlite3 = require('sqlite3');
@@ -30,7 +31,7 @@ const startServer = () => {
   app.use(cors());
 
   app.use('/employee', employeeRoutes(db)); //http://localhost:5000/employee/allemployee/ //http://localhost:5000/employee/employeeById/1004/ 
-  //app.use('/assignment', assignmentRoutes(db));
+  app.use('/trip', assignmentRoutes(db));
 
   app.listen(Port, () => {
     console.log(`Server is connected successfully and running at http://localhost:${Port}`);

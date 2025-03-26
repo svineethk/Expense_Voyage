@@ -1,3 +1,14 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Disallow:
+
+
+CREATE TABLE trip (
+    trip_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    employee_id INTEGER,
+    client_place TEXT,
+    start_date TEXT,
+    end_date TEXT,
+    status TEXT,
+    FOREIGN KEY (employee_id) REFERENCES employee(id)
+);

@@ -1,0 +1,74 @@
+.employee-container{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column
+}
+
+.nav-container{
+    height: 70px;
+    width: 100%;
+    background-color: aquamarine;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.logout-button{
+    height:40px;
+    width: 100px;
+    background-color:tomato ;
+    border: 1px solid #fff;
+    color: #ffffff;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.create-trip{
+    height: 60px;
+    width: 100%;
+    background-color: bisque;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 50px;
+}
+
+.request-button{
+    height: 40px;
+    width: 160px;
+    border-radius: 10px;
+    border: 1px solid springgreen;
+    background-color: darkcyan;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.request-button:hover{
+    background-color: cyan;
+    color: black;
+    border: 1px solid black;
+}
+
+.trip-details{
+    height: 90%;
+    width: 100%;
+    background-color: coral;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.trip-container{
+    height: 90%;
+    width: 92%;
+    background-color: aqua;
+    display: flex;
+    flex-direction:row ;
+    flex-wrap: wrap;
+    padding: 20px;
+}
