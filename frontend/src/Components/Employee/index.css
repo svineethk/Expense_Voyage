@@ -8,14 +8,15 @@ body{
 
 
 .employee-container{
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
     width: 100vw;
     display: flex;
     flex-direction: column;
 }
 
 .nav-container{
-    height: 70px;
+    height:70px;
     width: 100%;
     background-color: #2C3E50;
     color: #ffffff;;
@@ -298,3 +299,67 @@ li{
     color: #ffffff;
 
 }
+
+.approved-trips-container {
+    width: 90%;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .trip-header {
+    font-size: 22px;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  .trip-table-container {
+    overflow-x: auto;
+  }
+  
+  .trip-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .trip-table th,
+  .trip-table td {
+    padding: 12px 15px;
+    text-align: left;
+  }
+  
+  .trip-table th {
+    background-color: #f4f4f4;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .trip-table tr {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .trip-table tr:last-child {
+    border-bottom: none;
+  }
+  
+  .trip-table tr:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #e74c3c;
+  }
+  
+  .delete-button:hover {
+    color: #c0392b;
+  }

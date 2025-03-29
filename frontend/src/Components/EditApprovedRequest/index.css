@@ -1,0 +1,179 @@
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f9fc;
+    color: #333;
+  }
+  
+  .container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: aqua;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .form-container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-top: 20px;
+  }
+  
+  .header {
+    font-size: 36px;
+    color: #3c3c3c;
+    text-align: center;
+    margin-bottom: 20px;
+    color: palevioletred;
+    font-family: 'Poppins';
+    font-weight: 600;
+  }
+  
+  .trip-id {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+  }
+  
+  .subheader {
+    font-size: 24px;
+    color: #444;
+    margin-bottom: 15px;
+  }
+  
+  .employee-details,
+  .trip-details {
+    margin-bottom: 20px;
+  }
+  
+  input,
+  select,
+  button {
+    font-size: 16px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 8px;
+  }
+  
+  input[type="number"]:focus,
+  select:focus {
+    outline: none;
+    border-color: #3f8bfc;
+  }
+  
+  .upload-section {
+    margin-top: 20px;
+  }
+  
+  .upload-section select {
+    background-color: #f4f8fb;
+  }
+  
+  .file-upload {
+    margin-top: 20px;
+  }
+  
+  .file-upload input[type="file"] {
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  .uploaded-files {
+    margin-top: 20px;
+  }
+  
+  .file-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+  }
+  
+  .file-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .file-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .image-preview {
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 8px;
+  }
+  
+  .pdf-preview {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .submit-button {
+    background-color: #3f8bfc;
+    color: white;
+    font-size: 18px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+    transition: background-color 0.3s;
+  }
+  
+  .submit-button:hover {
+    background-color: #3679c9;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 18px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .bill-type-selection{
+    width: 700px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;    
+  }
+
+  .select-bill{
+    width: 300px;
+  }
+
+  .bill-type{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+
+  }
+
+  .employee-details{
+    width: 100%;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
