@@ -70,7 +70,7 @@ button {
 
 .request-button{
     height: 40px;
-    width: 170px;
+    width: auto;
     border-radius: 10px;
     background-color:#3498DB;
     color: #ffffff;

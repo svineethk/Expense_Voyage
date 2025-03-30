@@ -81,9 +81,8 @@ class Login extends Component {
             value={password}  onChange={this.onChangePassword}/>
         </div>
         <div className="options-container">
-          <label>
-            <input type="checkbox"  onChange={this.showPassword}/> Show Password
-          </label>
+            <input type="checkbox"  onChange={this.showPassword}/>
+            <p className="password">Show Password</p>
         </div>
         <button type="submit" className="login-btn">Login</button>
         <p className="register-text">

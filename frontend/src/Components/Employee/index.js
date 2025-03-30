@@ -164,7 +164,7 @@ class Employee extends Component {
       return <Navigate to="/login" />;
     }
 
-    if (redirectToEdit && selectedTrip) {
+    if (redirectToEdit) {
         return <Navigate to={`/edit-approved-request/${selectedTrip.trip_id}`} state={{ currentEmployee, selectedTrip }} />;
       }
 
@@ -235,7 +235,7 @@ class Employee extends Component {
                             <td>{this.convertDateFormat(trip.end_date)}</td>
                             <td>₹50,000</td>
                             <td>
-                                <button className="delete-button" onClick={this.onClickEditApprovedRequest(trip.trip_id)}><FaEdit /></button>
+                                <button className="delete-button" onClick={() => this.onClickEditApprovedRequest(trip.trip_id)}><FaEdit /></button>
                             </td>
                             </tr>
                         ))}

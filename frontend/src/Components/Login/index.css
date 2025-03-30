@@ -83,12 +83,19 @@
 
 
 .options-container {
+    width: 20%;
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
     font-size: 14px;
     margin-top: 10px;
     margin-left: 10px;
     margin-bottom: 40px;
+}
+
+.password{
+    width: 200px;
 }
 
 
