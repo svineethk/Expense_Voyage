@@ -31,6 +31,7 @@ const EditApprovedRequest = () => {
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
+    console.log(file);
     if (file) {
       const newBill = {
         type: selectedBillType,
@@ -51,8 +52,8 @@ const EditApprovedRequest = () => {
     formData.append('totalSpent', totalSpent);
   
     bills.forEach((bill, index) => {
-      formData.append(`bills`, bill.file);
-      formData.append(`billTypes`, bill.type);
+      formData.append(`bills[${index}]`, bill.file);
+      formData.append(`billTypes[${index}]`, bill.type);
     });
   
     try {
@@ -120,7 +121,7 @@ const EditApprovedRequest = () => {
                 {selectedBillType && (
                   <div className="file-upload bill-type-selection">
                     <label htmlFor="fileInput" className='bill-type'>Upload {selectedBillType.charAt(0).toUpperCase() + selectedBillType.slice(1)} Bill</label>
-                    <input multiple
+                    <input
                       type="file"
                       id="fileInput"
                       name="bills[]"

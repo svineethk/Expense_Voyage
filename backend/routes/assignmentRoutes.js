@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      cb(null, `${req.user.id}-${uniqueSuffix}${path.extname(file.originalname)}`);
+      cb(null, `hello-${uniqueSuffix}${path.extname(file.originalname)}`);
     }
   });
   
@@ -73,30 +73,30 @@ const assignmentRoutes = (db) => {
     });
 
 
-    // router.post('/uploadTripDetails', upload.array('bills[]'), async (req, res) => {
-    //     try {
-    //         const { tripId, totalSpent } = req.body;
-    //         const files = req.files;
-
-    //         if (!tripId || !totalSpent || !files) {
-    //             return res.status(400).json({ error: 'tripId, totalSpent, and files are required' });
-    //         }
-
-    //         const filePaths = files.map((file, index) => {
-    //             const type = req.body[`bills[${index}][type]`];
-    //             return { path: file.path, type: type };
-    //         });
-
-    //         console.log('filePaths suceesfully Uploaded:');
-
-    //         // ... your database logic here
-
-    //         res.status(200).json({ success: true, message: 'Trip details updated successfully' });
-    //     } catch (error) {
-    //         console.error('Error uploading trip details:', error);
-    //         res.status(500).send(`Error updating trip details: ${error.message}`);
-    //     }
-    // });
+    router.post('/uploadTripDetails', upload.fields([{ name: 'bills[]', maxCount: 10 }]), async (req, res) => {
+      try {
+        const { tripId, totalSpent } = req.body;
+        const files = req.files['bills[]']; // This will get the array of files under 'bills[]' field
+    
+        if (!tripId || !totalSpent || !files) {
+          return res.status(400).json({ error: 'tripId, totalSpent, and files are required' });
+        }
+    
+        const filePaths = files.map((file, index) => {
+          const type = req.body[`billTypes[${index}]`];
+          return { path: file.path, type: type };
+        });
+    
+        console.log('filePaths successfully uploaded:', filePaths);
+    
+        // Your database logic here
+    
+        res.status(200).json({ success: true, message: 'Trip details updated successfully' });
+      } catch (error) {
+        console.error('Error uploading trip details:', error);
+        res.status(500).send(`Error updating trip details: ${error.message}`);
+      }
+    });
 
     router.post('/submit-expenses/:tripId',
         upload.array('expenseFiles'), 
