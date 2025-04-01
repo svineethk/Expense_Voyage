@@ -2,34 +2,32 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
-const path = require('path');
 const app = express();
+const fs = require('fs');
+const path = require('path');
+const cors = require('cors');
 
 
 const JWT_SECRET_KEY = 'jwt_secret_key'
+app.use(cors());
+
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, path.join(__dirname, 'uploads/expenses'));
-    },
-    filename: (req, file, cb) => {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      cb(null, `hello-${uniqueSuffix}${path.extname(file.originalname)}`);
-    }
-  });
-  
-  const upload = multer({ 
-    storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 },
-    fileFilter: (req, file, cb) => {
-      const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
-      if (allowedTypes.includes(file.mimetype)) {
-        cb(null, true);
-      } else {
-        cb(new Error('Only JPEG, PNG, and PDF files are allowed'), false);
-      }
-    }
-  });
+  destination: (req, file, cb) => {
+    cb(null, './uploads');  // Store files in 'uploads' directory
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));  // Give the file a unique name
+  }
+});
+
+// Set up multer middleware with the storage configuration
+const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } }); // Limit file size to 10MB
+
+// Middleware to parse JSON and form data
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 
 const assignmentRoutes = (db) => {
 
@@ -73,74 +71,36 @@ const assignmentRoutes = (db) => {
     });
 
 
-    router.post('/uploadTripDetails', upload.fields([{ name: 'bills[]', maxCount: 10 }]), async (req, res) => {
-      try {
-        const { tripId, totalSpent } = req.body;
-        const files = req.files['bills[]']; // This will get the array of files under 'bills[]' field
     
-        if (!tripId || !totalSpent || !files) {
-          return res.status(400).json({ error: 'tripId, totalSpent, and files are required' });
-        }
-    
-        const filePaths = files.map((file, index) => {
-          const type = req.body[`billTypes[${index}]`];
-          return { path: file.path, type: type };
-        });
-    
-        console.log('filePaths successfully uploaded:', filePaths);
-    
-        // Your database logic here
-    
-        res.status(200).json({ success: true, message: 'Trip details updated successfully' });
-      } catch (error) {
-        console.error('Error uploading trip details:', error);
-        res.status(500).send(`Error updating trip details: ${error.message}`);
-      }
-    });
+  router.post('/uploadTripDetails', upload.array('bills[]', 10), async (req, res) => {
+    try {
+      // Extract form data from the request
+      const tripId = req.body.tripId;
+      const totalSpent = req.body.totalSpent;
 
-    router.post('/submit-expenses/:tripId',
-        upload.array('expenseFiles'), 
-        async (req, res) => {
-          try {
-            const { tripId } = req.params;
-            const { types, amounts } = req.body;
-            const files = req.files;
-      
-            // Validate
-            if (!types || !amounts || !files || 
-                types.length !== amounts.length || 
-                amounts.length !== files.length) {
-              return res.status(400).json({ error: 'Invalid data format' });
-            }
-      
-            // Save to database
-            const queries = files.map((file, index) => {
-              return db.run(
-                `INSERT INTO expense_documents 
-                (trip_id, employee_id, type, file_path, amount) 
-                VALUES (?, ?, ?, ?, ?)`,
-                [tripId, req.user.id, types[index], file.path, amounts[index]]
-              );
-            });
-      
-            await Promise.all(queries);
-      
-            // Update trip status
-            await db.run(
-              `UPDATE trips SET status = 'EXPENSES_SUBMITTED' WHERE id = ?`,
-              [tripId]
-            );
-      
-            res.status(200).json({ success: true });
-          } catch (error) {
-            console.error('Error submitting expenses:', error);
-            res.status(500).json({ error: 'Server error' });
-          }
-        }
-      );
-      
+      // Extract the uploaded files
+      const files = req.files;
 
-    return router
+      // Log the form data and files to check the input
+      console.log('Trip ID:', tripId);
+      console.log('Total Spent:', totalSpent);
+      console.log('Files:', files);
+
+      // Your processing logic here (e.g., store the information in a database)
+
+      // Send response back to the frontend
+      res.status(200).send('Files uploaded successfully!');
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error uploading files');
+    }
+  });
+
+  router.get('/uploadTripDetails',async (req, res) => {
+    res.send('Upload trip details page');
+  })
+
+  return router
 }
 
 module.exports = assignmentRoutes

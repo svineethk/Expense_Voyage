@@ -46,32 +46,44 @@ const EditApprovedRequest = () => {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log(`tripId, ${tripId}`);
+    console.log(`totalSpent, ${totalSpent}`);
+    console.log(`bills, ${bills[0].file}`);
   
     const formData = new FormData();
     formData.append('tripId', tripId);
     formData.append('totalSpent', totalSpent);
   
     bills.forEach((bill, index) => {
-      formData.append(`bills[${index}]`, bill.file);
-      formData.append(`billTypes[${index}]`, bill.type);
+      formData.append('bills[]', bill.file);
     });
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`the formData of ${key} and the value is ${value}`); // Log each form field
+    }
   
     try {
-      const response = await axios.post('http://localhost:5000/trip/uploadTripDetails', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-  
-      if (response.statusText === 'OK') {
-        alert('Trip details updated successfully!');
-      } else {
-        alert('Failed to update trip details.');
-      }
+      const response = await fetch('http://localhost:5000/trip/uploadTripDetails', {
+        method: 'POST',
+        body: formData, // No need to set Content-Type manually
+    });
+
+    const data = await response.json();
     } catch (error) {
-      console.error('Error uploading trip details:', error);
-      alert('An error occurred while submitting the trip details.');
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        console.error('Server responded with:', error.response.data);
+        console.error('Status:', error.response.status);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('No response received:', error.request);
+      } else {
+        // Something happened in setting up the request
+        console.error('Error', error.message);
+      }
     }
+    
   };
 
   
