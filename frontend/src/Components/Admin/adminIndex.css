@@ -9,8 +9,9 @@
 .nav-container{
     height:70px;
     width: 100%;
-    background-color: #2C3E50;
-    color: #ffffff;;
+    background-color: #f7f7f8;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    color: #000000;
     padding: 0 20px;
     display: flex;
     flex-direction: row;
@@ -63,7 +64,7 @@ button {
     height: 40px;
     width: auto;
     border-radius: 50%;
-    background-color:#3498DB;
+    background-color:pink;
     color: #ffffff;
     cursor: pointer;
     font-size: 0;
@@ -74,7 +75,7 @@ button {
     height: 40px;
     width: auto;
     border-radius: 10px;
-    background-color:#3498DB;
+    background-color:pink;
     color: #ffffff;
     cursor: pointer;
     padding: 10px 20px;
@@ -91,3 +92,103 @@ button {
     color: black;
     border: 1px solid black;
 } */
+
+.admin-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    padding-left: 25px;
+    padding-right: 25px;
+    background-color: #E74C3C;
+    margin-bottom: 5px;
+}
+
+.header-admin{
+    width: 100%;
+    height: 100%; 
+    font-family: 'Poppins';
+    font-weight: bold;
+}
+
+.dashboard-container{
+    height: 800px;
+    width: 100%;
+    background-color: chocolate;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.graph1-container{
+    height: 50%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: chartreuse;
+}
+
+.graph2-container{
+    height: 50%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: chartreuse;
+}
+
+.overview-container{
+    height: 100%;
+    width: 500px;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 15px;
+    margin-left: 50px;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.overviewData-container{
+    height: 50px;
+    width:80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px;
+    margin-left: 35px;
+    font-weight: normal;
+    border: 1px solid darkgray;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+.data{
+    font-family:'Helvetica Neue';
+    font-weight: normal;
+    font-size: 22px;
+}
+
+.data-dark{
+    font-weight: bold;
+}
+
+.graph-container{
+    height: 100%;
+    width: 1300px;
+    background-color: #ffffff;
+    margin-left: 40px;
+    border-radius: 15px;
+    padding: 15px;
+}
+
+.row-container{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

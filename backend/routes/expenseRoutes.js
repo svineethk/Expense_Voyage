@@ -77,7 +77,7 @@ const expressRoutes = (db) => {
     });
 
 
-    router.get('/   ', async (req, res) => {
+    router.get('/trip-status', async (req, res) => {
         try {
             const query = `
                 SELECT
@@ -93,6 +93,32 @@ const expressRoutes = (db) => {
             if (rows.length === 0) {
                 return res.status(200).json({ employeeTrips: [] });
             }
+            const employeeTripData = rows.map(row => ({
+                employeeId: row.employeeId,
+                name: row.name,
+                tripsTaken: row.tripsTaken || 0,
+                totalAmountReimbursed: row.totalAmountReimbursed || 0
+            }));
+            res.json({ employeeTrips: employeeTripData });
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+    router.get('/employee-trips', async (req, res) => {
+        try {
+            const query = `
+                SELECT
+                    e.id AS employeeId,
+                    e.name,
+                    COUNT(t.trip_id) AS tripsTaken,
+                    SUM(t.total_expense) AS totalAmountReimbursed
+                FROM employee e
+                LEFT JOIN trips t ON e.id = t.employee_id
+                GROUP BY e.id, e.name;
+            `;
+            const rows = await db.all(query);
             const employeeTripData = rows.map(row => ({
                 employeeId: row.employeeId,
                 name: row.name,
