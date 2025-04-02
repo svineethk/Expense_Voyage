@@ -10,21 +10,35 @@ const cors = require('cors');
 
 const JWT_SECRET_KEY = 'jwt_secret_key'
 app.use(cors());
+const uploadPath = path.join(__dirname, 'uploads');
+
+if(!fs.existsSync(uploadPath)) {
+    fs.mkdirSync(uploadPath, { recursive: true });
+}
 
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './uploads');  // Store files in 'uploads' directory
+    const tripId = req.body.tripId;
+    if (!tripId) {
+      return cb(new Error('Trip ID is required'), null);
+    }
+
+    const tripFolder = path.join(uploadPath, tripId);
+    if (!fs.existsSync(tripFolder)) {
+      fs.mkdirSync(tripFolder, { recursive: true });
+    }
+
+    cb(null, tripFolder);
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));  // Give the file a unique name
+    cb(null, Date.now() + path.extname(file.originalname));
   }
 });
 
-// Set up multer middleware with the storage configuration
-const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } }); // Limit file size to 10MB
 
-// Middleware to parse JSON and form data
+const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } });
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -74,22 +88,15 @@ const assignmentRoutes = (db) => {
     
   router.post('/uploadTripDetails', upload.array('bills[]', 10), async (req, res) => {
     try {
-      // Extract form data from the request
       const tripId = req.body.tripId;
       const totalSpent = req.body.totalSpent;
+      const settleAmount = parseInt(totalSpent) - 50000
+      const tripAppendQuery = `UPDATE trips SET total_expense = ?,balance_settlement = ? WHERE trip_id = ?`;
 
-      // Extract the uploaded files
-      const files = req.files;
 
-      // Log the form data and files to check the input
-      console.log('Trip ID:', tripId);
-      console.log('Total Spent:', totalSpent);
-      console.log('Files:', files);
+      await db.run(tripAppendQuery, [totalSpent, settleAmount, tripId]);
 
-      // Your processing logic here (e.g., store the information in a database)
-
-      // Send response back to the frontend
-      res.status(200).send('Files uploaded successfully!');
+      res.status(200).send({message:'Files uploaded successfully!'});
     } catch (error) {
       console.error(error);
       res.status(500).send('Error uploading files');
