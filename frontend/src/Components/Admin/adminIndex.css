@@ -101,7 +101,6 @@ button {
     padding: 5px;
     padding-left: 25px;
     padding-right: 25px;
-    background-color: #E74C3C;
     margin-bottom: 5px;
 }
 
@@ -113,12 +112,13 @@ button {
 }
 
 .dashboard-container{
-    height: 800px;
+    height: 930px;
     width: 100%;
-    background-color: chocolate;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .graph1-container{
@@ -126,8 +126,8 @@ button {
     width: 100%;
     display: flex;
     flex-direction: row;
+    justify-content: space-evenly;
     align-items: center;
-    background-color: chartreuse;
 }
 
 .graph2-container{
@@ -135,8 +135,8 @@ button {
     width: 100%;
     display: flex;
     flex-direction: row;
+    justify-content: space-evenly;
     align-items: center;
-    background-color: chartreuse;
 }
 
 .overview-container{
@@ -178,7 +178,7 @@ button {
 
 .graph-container{
     height: 100%;
-    width: 1300px;
+    width: 1500px;
     background-color: #ffffff;
     margin-left: 40px;
     border-radius: 15px;
@@ -191,4 +191,38 @@ button {
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+.linear-chart{
+    height: 100%;
+    width: 60%;
+}
+
+.pie-chart{
+    height: 100%;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.employee-chart-container{
+    height: 95%;
+    width: 50%;
+    background-color: #ffffff;
+    border-radius: 18px;
+    padding: 20px;
+}
+
+.containers-data{
+    background-color: aqua;
+}
+
+.employee-trip-table{
+    margin-top: 20px;
+    height: 90%;
+    width: 100%;
+    table-layout: fixed;
+    text-align: center;
 }

@@ -1,11 +1,22 @@
 import { Component } from "react";
 import axios from 'axios'
 import "./adminIndex.css";
-
+import { Navigate } from "react-router-dom";
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    Legend,
+    ResponsiveContainer,
+    PieChart,
+    Pie,
+    Cell
+  } from "recharts"
 
 class Admin extends Component {
     state = {dashboardData:[],monthlyTripData:[],tripStatusData:[],employeeTripData:[],tripRequestData:[],isLoading:false
-    ,error:''}
+    ,error:'',returnToLogin:false,showAllTrips:false}
 
 
     fetchData = async () => {
@@ -30,6 +41,15 @@ class Admin extends Component {
             this.setState({isLoading:false})
         }
     }
+
+    onClickLogout = () => {
+        localStorage.removeItem('jwtToken');
+        this.setState({ returnToLogin: true });
+      };
+
+      onClickShowAllTrips = () => {
+        this.setState({showAllTrips:true})
+      }
 
     getOverviewData = () => {
         const {dashboardData} = this.state;
@@ -64,28 +84,124 @@ class Admin extends Component {
 
 
     getLinearBarChart = () => {
+        const {monthlyTripData} = this.state;
         return(
-            <h1>Vineeth</h1>
+            <div className="linear-chart">
+                <ResponsiveContainer width="100%" height={400}>
+                    <BarChart
+                        data={monthlyTripData}
+                        margin={{
+                        top: 5,
+                        }}
+                    >
+                        <XAxis
+                        dataKey="month"
+                        tick={{
+                            stroke: "gray",
+                            strokeWidth: 1,
+                        }}
+                        />
+                        <YAxis
+                        tick={{
+                            stroke: "gray",
+                            strokeWidth: 0,
+                        }}
+                        />
+                        <Legend
+                        wrapperStyle={{
+                            padding: 30,
+                        }}
+                        />
+                        <Bar dataKey="tripCount" name="tripCount" fill="#1f77b4" barSize="20%" />
+                    </BarChart>
+                </ResponsiveContainer>
+            </div>
         )
     }
 
-    
-    
+    getPieChart = () => {
+        const {tripStatusData} = this.state
+
+        return(
+            <div className="pie-chart">
+                <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                        <Pie
+                        cx="70%"
+                        cy="40%"
+                        data={tripStatusData}
+                        startAngle={0}
+                        endAngle={360}
+                        innerRadius="40%"
+                        outerRadius="70%"
+                        dataKey="count"
+                        >
+                        <Cell name="APPROVED" fill="#fecba6" />
+                        <Cell name="PENDING" fill="#b3d23f" />
+                        <Cell name="REJECTED" fill="#a44c9e" />
+                        <Cell name="COMPLETED" fill="#000000"/>
+                        </Pie>
+                        <Legend
+                        iconType="circle"
+                        layout="vertical"
+                        verticalAlign="middle"
+                        align="right"
+                        />
+                    </PieChart>
+                </ResponsiveContainer>
+            </div>
+        )
+    }
+
+    getFilteredData = employeeTripData => {
+        const getUpdatedTripData = employeeTripData.filter(eachData => eachData.name !== "Admin")
+        return getUpdatedTripData
+    }
 
 
+    getEmployeeTripDetails = () => {
+        const {employeeTripData} = this.state
+        const getUpdatedTripData = this.getFilteredData(employeeTripData)
+
+        return (
+            <table className="employee-trip-table">
+            <thead>
+                <tr>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Trips Taken</th>
+                <th>Total Amount Reimbursed</th>
+                </tr>
+            </thead>
+            <tbody>
+                {getUpdatedTripData.map((eachEmployee) => (
+                <tr key={eachEmployee.employeeId}>
+                    <td>{eachEmployee.employeeId}</td>
+                    <td>{eachEmployee.name}</td>
+                    <td>{eachEmployee.tripsTaken}</td>
+                    <td>{eachEmployee.totalAmountReimbursed}</td>
+                </tr>
+                ))}
+            </tbody>
+            </table>
+        );
+    }
 
     componentDidMount(){
         this.fetchData();
     }
 
-
-
-
-
     render(){
+        const {returnToLogin,showAllTrips} = this.state
 
-
-
+        const jwtToken = localStorage.getItem('jwtToken');
+    
+        if (!jwtToken || returnToLogin) {
+        return <Navigate to="/login" />;
+        }
+        else if(jwtToken || showAllTrips){
+            return <Navigate to="/showAllTrips"/>
+        }
         return(
             <div className="employee-container">
                 <nav className="nav-container">
@@ -95,7 +211,7 @@ class Admin extends Component {
                 <div className="admin-header">
                     <h1 className="header-admin">Admin Dashboard</h1>
                     <div className="create-trip">
-                        <button type="button" className="request-button" onClick={this.onClickPopout}>Show All Trips</button>
+                        <button type="button" className="request-button" onClick={this.onClickShowAllTrips}>Show All Trips</button>
                     </div>
                 </div>
                 <div className="dashboard-container">
@@ -108,11 +224,15 @@ class Admin extends Component {
                             <h1 className="overview-header data-dark">Monthly Trip Statistics</h1>
                             <div className="row-container">
                                 {this.getLinearBarChart()}
+                                {this.getPieChart()}
                             </div>
                         </div>
                     </div>
                     <div className="graph2-container">
-                        <h1>Hello 2</h1>
+                        <div className="employee-chart-container">
+                            <h1 className="data data-dark">Employee-wise Trip Details</h1>
+                            {this.getEmployeeTripDetails()}
+                        </div>
                     </div>
                 </div>
             </div>
