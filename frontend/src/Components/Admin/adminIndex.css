@@ -1,0 +1,93 @@
+.employee-container{
+    min-height: 100vh;
+    height: auto;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-container{
+    height:70px;
+    width: 100%;
+    background-color: #2C3E50;
+    color: #ffffff;;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.employee-header{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+button {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.logout-button{
+    height:40px;
+    width: 100px;
+    background-color: #E74C3C;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+}
+
+.logout-button:hover {
+    background-color: #C0392B;
+}
+
+.create-trip{
+    height: 60px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 50px;
+}
+
+.request-button{
+    height: 40px;
+    width: auto;
+    border-radius: 50%;
+    background-color:#3498DB;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 0;
+}
+
+
+.request-button:hover{
+    height: 40px;
+    width: auto;
+    border-radius: 10px;
+    background-color:#3498DB;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 10px 20px;
+    border: none;
+    margin-right: 50px; 
+    font-size: 22px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* .request-button:hover{
+    background-color: #2980B9;
+    color: black;
+    border: 1px solid black;
+} */

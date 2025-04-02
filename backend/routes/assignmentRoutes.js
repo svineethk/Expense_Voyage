@@ -103,9 +103,15 @@ const assignmentRoutes = (db) => {
     }
   });
 
-  router.get('/uploadTripDetails',async (req, res) => {
-    res.send('Upload trip details page');
-  })
+  router.get('/allTrips', async (req, res) => {
+    const query = 'SELECT * FROM trips';
+    try {
+      const allTrips = await db.all(query);
+      res.status(200).send(allTrips);
+    } catch (error) {
+      res.status(500).send(`DB Error: ${error.message}`);
+    }
+  });
 
   return router
 }

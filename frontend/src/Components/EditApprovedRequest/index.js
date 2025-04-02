@@ -52,10 +52,6 @@ const EditApprovedRequest = () => {
     bills.forEach((bill, index) => {
       formData.append('bills[]', bill.file);
     });
-
-    for (let [key, value] of formData.entries()) {
-      console.log(`the formData of ${key} and the value is ${value}`); // Log each form field
-    }
   
     try {
       const response = await fetch('http://localhost:5000/trip/uploadTripDetails', {
@@ -64,6 +60,9 @@ const EditApprovedRequest = () => {
     });
     const result = await response.json();
     alert(result.message);
+    setSelectedBillType('');
+    setTotalSpent('');
+    setBills([]);
     } catch (error) {
       console.error('Error uploading files:', error);
     }
@@ -76,7 +75,7 @@ const EditApprovedRequest = () => {
     <div className="container-approval">
       <div className="form-container">
         <h1 className="header">Edit Approved Trip</h1>
-        <p className="trip-id">Editing Trip with ID: {tripId}</p>
+        <p className="trip-id">TRIP ID: {tripId}</p>
 
         <div className='row-container'>
           <div className="employee-details">

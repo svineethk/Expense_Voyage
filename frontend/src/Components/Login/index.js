@@ -7,7 +7,7 @@ import "./index.css";
 
 class Login extends Component {
   state = { name:"",email: "", password: "",PhoneNumber:"", isSignUp: false,showPasswordText:false 
-    ,successMessage:'',errorMessage:'',designation:'',deparment:'',redirectToHome:false};
+    ,successMessage:'',errorMessage:'',designation:'',deparment:'',redirectToHome:false,redirectToAdmin:false};
 
   onLoginFormSubmit = async (event) => {
     const {email,password} = this.state;
@@ -20,7 +20,12 @@ class Login extends Component {
       const result = await response.data
       if(result.message){
         localStorage.setItem('jwtToken',result.token)
-        this.setState({successMessage:result.message,errorMessage:"",email:"",password:"",redirectToHome:true})
+        if(email === "admin@gmail.com"){
+          this.setState({successMessage:result.message,errorMessage:"",email:"",password:"",redirectToAdmin:true})
+        }
+        else{
+          this.setState({successMessage:result.message,errorMessage:"",email:"",password:"",redirectToHome:true})
+        }
       }else{
         this.setState({errorMessage:result.error,email:"",password:"",})
       }
@@ -139,14 +144,15 @@ class Login extends Component {
   }
 
   render() {
-    const{isSignUp,successMessage,redirectToHome}= this.state
+    const{isSignUp,successMessage,redirectToHome,redirectToAdmin}= this.state
 
 
-    const jwtToken =localStorage.getItem('jwtToken');
-    if (jwtToken || redirectToHome === true) {
-      return <Navigate to="/employee"/>
+    if (redirectToHome) {
+      return <Navigate to="/employee" />
+    } else if (redirectToAdmin) {
+      return <Navigate to="/admin" />
     }
-
+    
     return (
       <div className="app-container">
         <div className="login-container">
