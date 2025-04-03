@@ -1,8 +1,10 @@
 import { Component } from "react";
 import { FaEdit } from "react-icons/fa";
+import './index.css'
+import { Navigate } from "react-router-dom";
 
 class ShowAllTrips extends Component{
-    state = {allTrips:[]}
+    state = {allTrips:[],returnToAdmin:false}
 
     fetchAllTrips = async () => {
         try{
@@ -28,14 +30,68 @@ class ShowAllTrips extends Component{
         return `${day}-${month}-${year}`;
     }
 
+    closeAllTrips = () => {
+        this.setState({returnToAdmin:true})
+    }
+
+    getFilteredTrips = (allTrips) => {
+        const filteredAllTrips = allTrips.map(eachTrip => {
+            if (eachTrip.status === "PENDING") {
+                return {
+                    ...eachTrip,
+                    initial_amount: "Waiting for Approval",
+                    total_expense: "Waiting for Approval",
+                    balance_settlement: "Waiting for Approval"
+                };
+            }
+    
+        
+            if (eachTrip.status === "APPROVED" && 
+                (!eachTrip.initial_amount || !eachTrip.total_expense || !eachTrip.balance_settlement)) {
+                return {
+                    ...eachTrip,
+                    initial_amount: "Complete the Trip",
+                    total_expense: "Complete the Trip",
+                    balance_settlement: "Complete the Trip"
+                };
+            }
+            if (eachTrip.status === "COMPLETED" || eachTrip.status === "REJECTED") {
+                return {
+                    ...eachTrip,
+                    initial_amount: "COMPLETED",
+                    total_expense: "COMPLETED",
+                    balance_settlement: "COMPLETED"
+                };
+            }
+    
+            return eachTrip;
+        });
+
+        return filteredAllTrips;
+    }
+    
+    
+
+
 
 
 
     render(){
-        const {allTrips} = this.state
+        const {allTrips,returnToAdmin} = this.state
+        const filteredAllTrips = this.getFilteredTrips(allTrips);
+        console.log(filteredAllTrips)
+
+        if(returnToAdmin){
+            return <Navigate to="/admin"/>
+        }
+
         return(
             <div className="approved-trips-container">
-                                <h2 className="trip-header">Approved Trips</h2>
+                                <div className="trip-header-container">
+                                    <h2 className="trip-header">Approved Trips</h2>
+                                    <button type="button" className="close-button"
+                                     onClick={this.closeAllTrips}>Close</button>
+                                </div>
                                 <div className="trip-table-container">
                                 <table className="trip-table">
                                     <thead>
@@ -53,16 +109,16 @@ class ShowAllTrips extends Component{
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {allTrips.map((trip) => (
+                                    {filteredAllTrips.map((trip) => (
                                         <tr key={trip.trip_id}>
                                         <td>{trip.trip_id}</td>
                                         <td>{trip.employee_id}</td>
                                         <td>{trip.client_place}</td>
                                         <td>{this.convertDateFormat(trip.start_date)}</td>
                                         <td>{this.convertDateFormat(trip.end_date)}</td>
-                                        <td>₹{trip.initial_amount}</td>
-                                        <td>₹{trip.total_expense}</td>
-                                        <td>₹{trip.balance_settlement}</td>
+                                        <td>{isNaN(parseInt(trip.initial_amount)) ? trip.initial_amount : `₹${parseInt(trip.initial_amount).toLocaleString()}`}</td>
+                                        <td>{isNaN(parseInt(trip.total_expense)) ? trip.total_expense : `₹${parseInt(trip.total_expense).toLocaleString()}`}</td>
+                                        <td>{isNaN(parseInt(trip.balance_settlement)) ? trip.balance_settlement : `₹${parseInt(trip.balance_settlement).toLocaleString()}`}</td>
                                         <td>{trip.status}</td>
                                         <td>
                                             <button className="delete-button" onClick={() => this.onClickEditApprovedRequest(trip.trip_id)}><FaEdit /></button>
@@ -72,7 +128,7 @@ class ShowAllTrips extends Component{
                                     </tbody>
                                 </table>
                                 </div>
-                            </div>
+            </div>
         )
     }
 

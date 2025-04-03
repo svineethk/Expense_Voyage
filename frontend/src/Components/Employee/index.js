@@ -186,7 +186,7 @@ class Employee extends Component {
           <div className="popup-overlay">
             <div className="popup-content">
               <button className="close-popup" onClick={this.handleClosePopup}>X</button>
-              <h1>Please Fill the Request Entities</h1>
+              <h1 className="popup-header">Please Fill the Request Entities</h1>
               <form className="create-trip-request" onSubmit={this.onSubmitRequestTrip}>
                 <div className="unique-list-request">
                   <label htmlFor="employeeUserId" className="request-header">Employee ID</label>

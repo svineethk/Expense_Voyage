@@ -199,7 +199,7 @@ class Admin extends Component {
         if (!jwtToken || returnToLogin) {
         return <Navigate to="/login" />;
         }
-        else if(jwtToken || showAllTrips){
+        else if(showAllTrips){
             return <Navigate to="/showAllTrips"/>
         }
         return(

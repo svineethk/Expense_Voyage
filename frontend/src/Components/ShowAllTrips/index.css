@@ -1,0 +1,22 @@
+.trip-header-container{
+    height: 50px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.close-button{
+    height: 100%;
+    width: 120px;
+    background-color: orange;
+    color: #ffffff;
+    border-radius: 15px;
+}
+
+.link{
+    color: inherit;
+    text-decoration: none;
+}
