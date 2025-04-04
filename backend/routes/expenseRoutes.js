@@ -15,7 +15,7 @@ const expressRoutes = (db) => {
                 FROM trips t;
             `;
             const rows = await db.all(query);
-            const dashboardData = rows[0] || {  //handle if no data
+            const dashboardData = rows[0] || { 
                 totalTrips: 0,
                 pendingTrips: 0,
                 approvedTrips: 0,

@@ -4,6 +4,8 @@ const app = express();
 const cors = require('cors');
 const path = require('path');
 
+
+
 const employeeRoutes = require('./routes/employeeRoutes');
 const assignmentRoutes = require('./routes/assignmentRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
@@ -30,6 +32,7 @@ const initializeDBandServer = async () => {
 const startServer = () => {
   app.use(bodyParser.json());
   app.use(cors());
+  app.use('/uploads', express.static(path.join(__dirname, 'routes', 'uploads')));
 
   app.use('/employee', employeeRoutes(db)); //http://localhost:5000/employee/allemployee/ //http://localhost:5000/employee/employeeById/1004/ 
   app.use('/trip', assignmentRoutes(db));

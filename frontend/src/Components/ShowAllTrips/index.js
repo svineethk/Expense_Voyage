@@ -6,7 +6,7 @@ import { Navigate } from "react-router-dom";
 
 class ShowAllTrips extends Component {
   state = { allTrips: [], returnToAdmin: false, isModifyTrip: false, respectiveTrip: {}
-            ,respectiveEmployee:{} }
+            ,respectiveEmployee:{},tripImages:[],currentImageIndex: 0  }
 
   fetchAllTrips = async () => {
     try {
@@ -70,9 +70,18 @@ class ShowAllTrips extends Component {
     return filteredAllTrips;
   }
 
-  onClickModifyTrip = (id) => {
+  onClickModifyTrip = async (id) => {
     const { allTrips } = this.state;
     const respectiveTrip = allTrips.filter(eachTrip => eachTrip.trip_id === id);
+
+    try{
+      const response = await axios.get(`http://localhost:5000/trip/getTripImages/${id}`);
+      const result = await response.data;
+      console.log(result);
+      this.setState({tripImages:result});
+    }catch(error){
+      console.error(error);
+    }
 
     this.setState({ isModifyTrip: true, respectiveTrip: respectiveTrip[0] });
   }
@@ -110,8 +119,22 @@ class ShowAllTrips extends Component {
     }
   };
 
+  goToPreviousImage = () => {
+    this.setState(prevState => ({
+      currentImageIndex: prevState.currentImageIndex === 0 
+        ? prevState.tripImages.length - 1 
+        : prevState.currentImageIndex - 1
+    }));
+  };
+  
+  goToNextImage = () => {
+    this.setState(prevState => ({
+      currentImageIndex: (prevState.currentImageIndex + 1) % prevState.tripImages.length
+    }));
+  };
+
   render() {
-    const { allTrips, returnToAdmin, isModifyTrip, respectiveTrip } = this.state;
+    const { allTrips, returnToAdmin, isModifyTrip, respectiveTrip,tripImages,currentImageIndex } = this.state;
     const filteredAllTrips = this.getFilteredTrips(allTrips);
     const { trip_id,client_place, start_date, end_date, status,employee_id,initial_amount,total_expense,balance_settlement } = respectiveTrip;
 
@@ -121,11 +144,12 @@ class ShowAllTrips extends Component {
 
     return (
       isModifyTrip ? (
-        <div className="popup-overlay">
-          <div className="popup-content">
+        <div className="popup-overlay-trip">
+          <div className="popup-content-trip">
             <button className="close-popup" onClick={this.handleClosePopup}>X</button>
             <h1 className="popup-header">Modify Trip Status</h1>
-            <form className="create-trip-request">
+            <div className="popup-row-container">
+            <form className="create-trip-request-form">
               <div className="unique-list-request">
                 <label htmlFor="employeeUserId" className="request-header">Employee ID</label>
                 <p type="text" id="employeeUserId" className="request-input paragraph">
@@ -174,8 +198,28 @@ class ShowAllTrips extends Component {
                   <option value="REJECTED">REJECTED</option>
                 </select>
               </div>
-              <button type="submit" className="request-submit-button" onClick={this.handleStatusChange}>Submit</button>
+              <button type="submit" className="request-submit-button-trip" onClick={this.handleStatusChange}>Submit</button>
             </form>
+            <div className="trip-image-container">
+              <h1 className="trip-image-header">Trip Images</h1>
+              {Array.isArray(tripImages) && tripImages.length > 0 && (
+                <>
+                  <div className="image-slider">
+                  <img
+                    src={`http://localhost:5000${tripImages[currentImageIndex]}`}
+                    alt={`Trip Not Available ${currentImageIndex + 1}`}
+                    className="trip-image"
+                  />
+                </div>
+                <div className="image-indicator">
+                  <button onClick={this.goToPreviousImage} className="nav-button">◀️</button>
+                  <button onClick={this.goToNextImage} className="nav-button">▶️</button>
+                </div>
+
+                </>
+              )}
+            </div>
+            </div>
           </div>
         </div>
       ) : (

@@ -104,7 +104,7 @@ const assignmentRoutes = (db) => {
   });
 
   router.get('/allTrips', async (req, res) => {
-    const query = 'SELECT * FROM trips';
+    const query = 'SELECT * FROM trips order by employee_id asc';
     try {
       const allTrips = await db.all(query);
       res.status(200).send(allTrips);
@@ -141,8 +141,9 @@ const assignmentRoutes = (db) => {
       }
 
     const imageFiles = files.filter(file => /\.(jpg|jpeg|png|gif|bmp)$/i.test(file));
+    const imageUrls = imageFiles.map(file => `/uploads/${tripId}/${file}`);
   
-    res.status(200).json(imageFiles);
+    res.status(200).json(imageUrls);
     })
 
   })
