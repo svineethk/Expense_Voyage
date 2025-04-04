@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { FaEdit } from "react-icons/fa";
+import axios from 'axios'
 import './index.css'
 import { Navigate } from "react-router-dom";
 
@@ -80,17 +81,39 @@ class ShowAllTrips extends Component {
     this.setState({ isModifyTrip: false });
   };
 
-  handleStatusChange = (event) => {
-    const { respectiveTrip } = this.state;
+  statusChanged = (event) => {
+    const {allTrips, respectiveTrip } = this.state;
+    const updatedStatus= event.target.value
+
+    const updatedRespectiveTrip = {...respectiveTrip,status:updatedStatus}
+    const updatedAllTrips = allTrips.map((trip) => trip.trip_id === respectiveTrip.trip_id ? updatedRespectiveTrip : trip);
+
     this.setState({
-      respectiveTrip: { ...respectiveTrip, status: event.target.value }
+      respectiveTrip:updatedRespectiveTrip,allTrips:updatedAllTrips
     });
+  }
+
+  handleStatusChange = async (event) => {
+    const {respectiveTrip} = this.state
+    const {status} = respectiveTrip;
+  
+    try{
+      const response = await axios.post(`http://localhost:5000/trip/updateStatusByTripId/${respectiveTrip.trip_id}`,{
+        status
+      })
+      const result = await response.data;
+      alert(result);
+      this.setState({isModifyTrip:false},this.fetchAllTrips)
+    }catch(error){
+      console.error(error)
+      console.log(`Error Throws while Updating the status ${error}`)
+    }
   };
 
   render() {
     const { allTrips, returnToAdmin, isModifyTrip, respectiveTrip } = this.state;
     const filteredAllTrips = this.getFilteredTrips(allTrips);
-    const { client_place, start_date, end_date, status,employee_id,initial_amount,total_expense,balance_settlement } = respectiveTrip;
+    const { trip_id,client_place, start_date, end_date, status,employee_id,initial_amount,total_expense,balance_settlement } = respectiveTrip;
 
     if (returnToAdmin) {
       return <Navigate to="/admin" />;
@@ -106,8 +129,12 @@ class ShowAllTrips extends Component {
               <div className="unique-list-request">
                 <label htmlFor="employeeUserId" className="request-header">Employee ID</label>
                 <p type="text" id="employeeUserId" className="request-input paragraph">
-                  Vineeth
+                  {employee_id}
                 </p>
+              </div>
+              <div className="unique-list-request">
+                <label htmlFor="clientPlace" className="request-header">TRIP ID</label>
+                <p className="request-input paragraph">{trip_id}</p>
               </div>
               <div className="unique-list-request">
                 <label htmlFor="clientPlace" className="request-header">Client Place</label>
@@ -122,12 +149,24 @@ class ShowAllTrips extends Component {
                 <p className="request-input paragraph">{this.convertDateFormat(end_date)}</p>
               </div>
               <div className="unique-list-request">
+                <label htmlFor="clientPlace" className="request-header">Initial Amount</label>
+                <p className="request-input paragraph">{initial_amount}</p>
+              </div>
+              <div className="unique-list-request">
+                <label htmlFor="clientPlace" className="request-header">Total Expense Amount</label>
+                <p className="request-input paragraph">{total_expense}</p>
+              </div>
+              <div className="unique-list-request">
+                <label htmlFor="clientPlace" className="request-header">Balance Settlement</label>
+                <p className="request-input paragraph">{balance_settlement}</p>
+              </div>
+              <div className="unique-list-request">
                 <label htmlFor="status" className="request-header">Status</label>
                 <select
                   id="status"
                   className="request-input"
                   value={status}
-                  onChange={this.handleStatusChange}
+                  onChange={this.statusChanged}
                 >
                   <option value="PENDING">PENDING</option>
                   <option value="APPROVED">APPROVED</option>
@@ -135,7 +174,7 @@ class ShowAllTrips extends Component {
                   <option value="REJECTED">REJECTED</option>
                 </select>
               </div>
-              <button type="submit" className="request-submit-button">Submit</button>
+              <button type="submit" className="request-submit-button" onClick={this.handleStatusChange}>Submit</button>
             </form>
           </div>
         </div>

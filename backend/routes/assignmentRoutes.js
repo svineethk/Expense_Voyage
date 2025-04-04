@@ -113,6 +113,40 @@ const assignmentRoutes = (db) => {
     }
   });
 
+  router.post('/updateStatusByTripId/:tripId',async (req,res) => {
+    const {tripId} = req.params;
+    const {status} = req.body;
+
+    const query = `update trips set status = ? where trip_id = ?`;
+    try{
+      await db.run(query, [status,tripId])
+      res.status(200).send("Updated Successfully")
+    } catch(error){
+      res.status(500).send(`DB Error : ${error.message}`)
+    }
+  })
+
+  router.get('/getTripImages/:tripId', async (req, res) => {
+    const { tripId } = req.params;
+    const tripFolder = path.join(__dirname, 'uploads', tripId);
+
+    if (!fs.existsSync(tripFolder)) {
+      return res.status(404).send('No images found for this trip');
+    }
+  
+    
+    fs.readdir(tripFolder, (err, files) => {
+      if (err) {
+        return res.status(500).send('Error reading images');
+      }
+
+    const imageFiles = files.filter(file => /\.(jpg|jpeg|png|gif|bmp)$/i.test(file));
+  
+    res.status(200).json(imageFiles);
+    })
+
+  })
+
 
 
   return router
