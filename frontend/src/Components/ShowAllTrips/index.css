@@ -1,19 +1,40 @@
 .trip-header-container{
-    height: 50px;
+    height: 100px;
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    
+}
+
+.chat-row-container{
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border: none;
 }
 
 .close-button{
-    height: 100%;
-    width: 120px;
+    height: 30px;
+    width: 30px;
     background-color: orange;
     color: #ffffff;
-    border-radius: 15px;
+    border-radius: 50%;
+    font-size: 0;
+}
+
+.close-button:hover{
+  height: 50%;
+  width: 80px;
+  background-color: orange;
+  color: #ffffff;
+  border-radius: 15px;
+  font-size: 20px;
 }
 
 .link{
@@ -131,4 +152,93 @@
   border: none;
   cursor: pointer;
   font-size: 20px;
+}
+
+.chat-container {
+  height: 100%;
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.chat-input-form {
+  width: 100%;
+  display: flex;
+}
+
+.chat-input {
+  height: 100%;
+  width: 80%;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  margin-right: 10px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: maroon;
+  font-weight: 600;
+  border: none;
+  padding-left: 5px;
+}
+
+.chat-input:hover{
+  background-color: cornsilk;
+}
+
+.chat-submit-button {
+  height: 80%;
+  width: 20%;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 20px;
+  font-size: 18px;
+}
+
+.chat-submit-button:hover {
+  background-color: #0056b3;
+  border: 1px solid #ddd;
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  position: relative;
+  background-color: #f1f1f1;
+  width: 50px;
+  height: 20px;
+  border-radius: 20px;
+  padding: 0;
+  margin: 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  position: absolute;
+  height: 18px; 
+  width: 18px; 
+  left: 1px; 
+  background-color: #303030;
+  border-radius: 50%; 
+  transition: 0.3s ease all; 
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+}
+
+input:checked[type="checkbox"]::before {
+  background-color: blue;
+  left: calc(100% - 19px);
+}
+
+.ai-button-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height:50%;
+  width: 150px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  color: cornflowerblue;
+  font-weight: bold;
 }

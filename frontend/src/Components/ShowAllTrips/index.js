@@ -6,7 +6,8 @@ import { Navigate } from "react-router-dom";
 
 class ShowAllTrips extends Component {
   state = { allTrips: [], returnToAdmin: false, isModifyTrip: false, respectiveTrip: {}
-            ,respectiveEmployee:{},tripImages:[],currentImageIndex: 0  }
+            ,respectiveEmployee:{},tripImages:[],currentImageIndex: 0,chatInput: '',
+            filteredTrips: [],aiSearch:false }
 
   fetchAllTrips = async () => {
     try {
@@ -133,10 +134,152 @@ class ShowAllTrips extends Component {
     }));
   };
 
+  handleChatSubmit = async (event) => {
+    event.preventDefault();
+    const { chatInput, allTrips } = this.state;
+    if (!chatInput.trim()) return;
+
+    this.setState({
+        chatInput: ''
+    });
+
+    try {
+        const aiResponse = await this.processChatInput(chatInput, allTrips);
+
+        this.setState({
+            filteredTrips: this.getFilteredTrips(aiResponse.results)
+        });
+    } catch (error) {
+        console.error('AI Processing Error:', error);
+    }
+}
+
+  handleChatInputChange = (event) => {
+    this.setState({chatInput:event.target.value})
+  }
+
+  async processChatInput(input, allTrips) {
+    let results = [...allTrips];
+    let message = "Here are the results:"; 
+
+  
+    if (input.includes('employeeId')) {
+        const employeeIdMatch = input.match(/employeeId\s+(\d+)/); 
+        if (employeeIdMatch) {
+            const employeeId = parseInt(employeeIdMatch[1]); 
+            results = results.filter(trip => trip.employee_id === employeeId); 
+            if (results.length === 0) {
+              message = `No trips found for Employee ID: ${employeeId}`;
+            } else {
+              message = `Trips for Employee ID: ${employeeId}`;
+            }
+        } else {
+          message = "Invalid employeeId format. Please specify a number after employeeId.";
+        }
+    }
+
+    
+    if (input.includes('client_place')) {
+        const client_placeMatch = input.match(/client_place\s+([\w\s]+)/i); 
+        if (client_placeMatch) {
+            const clientPlace = client_placeMatch[1].toLowerCase(); 
+            results = results.filter(trip => trip.client_place.toLowerCase().includes(clientPlace));
+             if (results.length === 0) {
+              message = `No trips found for Client Place containing: ${clientPlace}`;
+            } else {
+              message = `Trips for Client Place containing: ${clientPlace}`;
+            }
+        } else {
+          message = "Invalid client_place format. Please specify the place name after client_place.";
+        }
+    }
+
+    
+    if (input.includes('status')) {
+        const statusMatch = input.match(/status\s+([\w]+)/i); 
+        if (statusMatch) {
+            const status = statusMatch[1].toUpperCase();
+            results = results.filter(trip => trip.status === status);
+             if (results.length === 0) {
+              message = `No trips found with status: ${status}`;
+            } else {
+              message = `Trips with status: ${status}`;
+            }
+        } else {
+          message = "Invalid status format. Please specify the status name after status.";
+        }
+    }
+
+    
+    if (input.includes('start_date')) {
+        const startDateMatch = input.match(/start_date\s+([\d-]+)/);
+        if (startDateMatch) {
+            const startDate = startDateMatch[1]; 
+            results = results.filter(trip => trip.start_date === startDate); 
+            if (results.length === 0) {
+              message = `No trips found with start date: ${startDate}`;
+            } else {
+              message = `Trips with start date: ${startDate}`;
+            }
+        } else {
+          message = "Invalid start_date format. Please specify the date in YYYY-MM-DD format after start_date.";
+        }
+    }
+
+    
+    if (input.includes('tripId')) {
+      const tripIdMatch = input.match(/tripId\s+(\d+)/);
+      if(tripIdMatch){
+        const tripId = parseInt(tripIdMatch[1]);
+        results = results.filter(trip => trip.trip_id === tripId);
+        if(results.length === 0){
+          message = `No trips found with tripId: ${tripId}`;
+        } else {
+          message = `Trips with tripId: ${tripId}`;
+        }
+      } else {
+        message = "Invalid tripId format. Please specify the tripId after tripId."
+      }
+    }
+
+    
+    if (input.includes('end_date')) {
+      const endDateMatch = input.match(/end_date\s+([\d-]+)/);
+      if(endDateMatch){
+        const endDate = endDateMatch[1];
+        results = results.filter(trip => trip.end_date === endDate);
+        if(results.length === 0){
+          message = `No trips found with end date: ${endDate}`;
+        } else {
+          message = `Trips with end date: ${endDate}`;
+        }
+      } else {
+        message = "Invalid end_date format. Please specify the date in YYYY-MM-DD format after end_date."
+      }
+    }
+
+    if (results.length === 0 && message === "Here are the results:") {
+        message = "No matching results found.";
+    }
+
+    return { results, message };
+}
+
+onChangeAi = (event) => {
+  if(event.target.checked){
+    this.setState({aiSearch:true})
+  }
+  else{
+    this.setState({aiSearch:false})
+  }
+}
+
   render() {
-    const { allTrips, returnToAdmin, isModifyTrip, respectiveTrip,tripImages,currentImageIndex } = this.state;
+    const { allTrips, returnToAdmin, isModifyTrip, respectiveTrip,tripImages,currentImageIndex,chatInput,
+      filteredTrips } = this.state;
     const filteredAllTrips = this.getFilteredTrips(allTrips);
     const { trip_id,client_place, start_date, end_date, status,employee_id,initial_amount,total_expense,balance_settlement } = respectiveTrip;
+    const modifiedAllTrips = filteredTrips.length === 0 ? filteredAllTrips : filteredTrips;
 
     if (returnToAdmin) {
       return <Navigate to="/admin" />;
@@ -226,7 +369,24 @@ class ShowAllTrips extends Component {
         <div className="approved-trips-container">
           <div className="trip-header-container">
             <h2 className="trip-header">Approved Trips</h2>
+           <div className="chat-row-container">
+            {aiSearch ? (<div className="chat-container">
+              <form className="chat-input-form" onSubmit={this.handleChatSubmit}>
+                <input
+                   type="text"
+                   value={chatInput}
+                   onChange={this.handleChatInputChange}
+                   placeholder="Type your message..."
+                   className="chat-input"
+                />
+                <button type="submit" className="chat-submit-button">AI Search</button>
+              </form>
+            </div>) : (<div className="ai-button-container">
+              <label htmlFor="ai-button">AI Search</label>
+              <input type="checkbox" id="ai-button" onChange={this.onChangeAi}/>
+            </div>)}
             <button type="button" className="close-button" onClick={this.closeAllTrips}>Close</button>
+           </div>
           </div>
           <div className="trip-table-container">
             <table className="trip-table">
@@ -245,7 +405,7 @@ class ShowAllTrips extends Component {
                 </tr>
               </thead>
               <tbody>
-                {filteredAllTrips.map((trip) => (
+                {modifiedAllTrips.map((trip) => (
                   <tr key={trip.trip_id}>
                     <td>{trip.trip_id}</td>
                     <td>{trip.employee_id}</td>
