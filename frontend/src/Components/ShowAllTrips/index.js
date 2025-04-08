@@ -274,9 +274,13 @@ onChangeAi = (event) => {
   }
 }
 
+onCloseAisearch = () => {
+  this.setState({aiSearch:false})
+}
+
   render() {
     const { allTrips, returnToAdmin, isModifyTrip, respectiveTrip,tripImages,currentImageIndex,chatInput,
-      filteredTrips } = this.state;
+      filteredTrips,aiSearch } = this.state;
     const filteredAllTrips = this.getFilteredTrips(allTrips);
     const { trip_id,client_place, start_date, end_date, status,employee_id,initial_amount,total_expense,balance_settlement } = respectiveTrip;
     const modifiedAllTrips = filteredTrips.length === 0 ? filteredAllTrips : filteredTrips;
@@ -290,7 +294,7 @@ onChangeAi = (event) => {
         <div className="popup-overlay-trip">
           <div className="popup-content-trip">
             <button className="close-popup" onClick={this.handleClosePopup}>X</button>
-            <h1 className="popup-header">Modify Trip Status</h1>
+            <h1 className="popup-modify-header">Modify Trip Status</h1>
             <div className="popup-row-container">
             <form className="create-trip-request-form">
               <div className="unique-list-request">
@@ -380,6 +384,7 @@ onChangeAi = (event) => {
                    className="chat-input"
                 />
                 <button type="submit" className="chat-submit-button">AI Search</button>
+                <button type="button" onClick={this.onCloseAisearch} className="clost_aisearch">X</button>
               </form>
             </div>) : (<div className="ai-button-container">
               <label htmlFor="ai-button">AI Search</label>
@@ -406,7 +411,7 @@ onChangeAi = (event) => {
               </thead>
               <tbody>
                 {modifiedAllTrips.map((trip) => (
-                  <tr key={trip.trip_id}>
+                  <tr className="trip-table-row" key={trip.trip_id}>
                     <td>{trip.trip_id}</td>
                     <td>{trip.employee_id}</td>
                     <td>{trip.client_place}</td>

@@ -42,6 +42,12 @@
     text-decoration: none;
 }
 
+.popup-modify-header{
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: slateblue;
+  text-decoration: underline;
+}
+
 .popup-overlay-trip {
     position: fixed;
     top: 0;
@@ -67,23 +73,43 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    background-color: #D4EDDA;
   }
   
   .close-popup {
     position: absolute;
     top: 10px;
     right: 10px;
-    background: transparent;
     border: none;
-    font-size: 22px;
+    font-size: 13px;
     cursor: pointer;
     margin-bottom: 30px;
     border-radius: 50%;
     font-weight: bolder;
-    background-color: black;
+    background-color: red;
     color: #ffffff;
-    width: 50px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.clost_aisearch{
+  height: 10px;
+  width: 10px;
+  background-color: red;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+  font-size: 12px;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .popup-row-container{
@@ -91,36 +117,62 @@
   width: 100%;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
+  margin-top: 20px; 
 }
 
 .create-trip-request-form{
   height: 100%;
-  width: 50%;
+  width: 45%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  background-color: #F0F4F8;
+  border-radius: 30px;
+  padding: 20px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .trip-image-container{
-  height: 100%;
+  height: 90%;
   width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #F0F4F8;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.08);
+  border-radius: 30px;
+  padding: 20px;
+}
+
+.trip-image-header{
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: khaki;
+  margin-bottom: 30px;
 }
 
 .request-submit-button-trip{
     height: 50px;
     width: 18%;
-    background-color: turquoise;
+    background-color: #79c5c7;
     color: #ffffff;
     border-radius: 15px;
     font-size: 20px;
     font-weight: bolder;
     cursor: pointer;
     align-self: center;
+}
+
+.request-submit-button-trip:hover{
+  background-color: royalblue;
+}
+
+.trip-header{
+  font-family: Cursive;
+  font-weight: bold;
+  color: maroon;
 }
 
 
@@ -147,11 +199,19 @@
 .nav-button{
   height: 50px;
   width: 50px;
-  background-color: #ffffff;
+  background-color: #F0F4F8;
   border-radius: 50%;
   border: none;
   cursor: pointer;
   font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-button:hover{
+  background-color: darksalmon;
 }
 
 .chat-container {
@@ -241,4 +301,58 @@ input:checked[type="checkbox"]::before {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   color: cornflowerblue;
   font-weight: bold;
+}
+
+
+
+.trip-table-row {
+  background-color: #EFEFEF; 
+  border-radius: 10px; 
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15); 
+  margin: 8px 0; 
+  transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out; 
+}
+
+
+.trip-table-row:hover {
+  background-color: #D1E8E2;
+  transform: translateY(-4px);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); 
+}
+
+.trip-table th {
+  background-color: darkgray; 
+  color: maroon;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #E2B5B0;
+  color: #2C3E50; 
+  font-weight: bold;
+}
+
+
+.trip-table td {
+  padding: 12px;
+  text-align: left;
+  color: #2C3E50;
+}
+
+
+.delete-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: #1ABC9C; 
+  font-size: 16px;
+}
+
+.delete-button:hover {
+  color: #16A085; 
+}
+
+
+.trip-table {
+  border-collapse: separate;
+  border-spacing: 0 10px; 
+  width: 100%;
 }
