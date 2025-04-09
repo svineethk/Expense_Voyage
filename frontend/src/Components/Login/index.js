@@ -67,10 +67,44 @@ class Login extends Component {
   }
 
 
+  onSignupSubmit = async (event) => {
+    const {name,email,PhoneNumber,designation,deparment} = this.state
+    event.preventDefault()
+
+    try{
+      const response = await axios.post('http://localhost:5000/employee/signup/', {
+        name,
+        email,
+        PhoneNumber,
+        designation,
+        deparment
+      })
+
+      const result = await response.data;
+      if(result.message){
+        localStorage.setItem('jwtToken',result.token);
+        this.setState({successMessage:result.message,errorMessage:"",redirectToHome:true,
+          name:"",email:"",PhoneNumber:"",designation:"",deparment:""
+        })
+      }else{
+        this.setState({errorMessage:result.error,name:"",email:"",PhoneNumber:"",designation:"",deparment:""})
+      }
+    }catch(error){
+      this.setState({errorMessage:error.message,successMessage:"",
+        name:"",email:"",PhoneNumber:"",designation:"",deparment:""
+      })
+    }
+
+
+
+  }
+
+
 
   loginContainer = () => {
-    const {email,password,showPasswordText} = this.state
+    const {email,password,showPasswordText,successMessage,errorMessage} = this.state
     return (
+      <>
       <form className="form-container" onSubmit={this.onLoginFormSubmit}>
         <h1 className="login-header">Login</h1>
         <div className="input-container">
@@ -94,14 +128,18 @@ class Login extends Component {
           No Account Yet? <button type="button" onClick={this.onRegisterForm}>Register</button>
         </p>
       </form>
+      {successMessage === "" ? <p className="error-message-failure">{errorMessage}</p> : <p className="error-message-success">{successMessage}</p>}
+      </>
+      
     );
   };
 
 
   signupContainer = () => {
-    const {name,email,PhoneNumber,designation,deparment}= this.state
+    const {name,email,PhoneNumber,designation,deparment,successMessage,errorMessage}= this.state
 
     return(
+      <>
       <form className="form-container" onSubmit={this.onSignupSubmit}>
         <h1 className="login-header">Sign Up</h1>
         <div className="input-container">
@@ -139,12 +177,14 @@ class Login extends Component {
           Already Register? <button type="button" onClick={this.onRegisterForm}>Login</button>
         </p>
       </form>
+      {successMessage === "" ? <p className="error-message-failure">{errorMessage}</p> : <p className="error-message-success">{successMessage}</p>}
+      </>
     )
 
   }
 
   render() {
-    const{isSignUp,successMessage,redirectToHome,redirectToAdmin}= this.state
+    const{isSignUp,redirectToHome,redirectToAdmin}= this.state
 
 
     if (redirectToHome) {
@@ -160,7 +200,6 @@ class Login extends Component {
           <div className="image-container">
             <img src="/Captureimg.png" alt="Illustration" className="illustration" />
           </div>
-          <p>{successMessage}</p>
         </div>
       </div>
     );

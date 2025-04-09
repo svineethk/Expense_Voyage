@@ -46,6 +46,7 @@
     height: 90%;
     width:90%;
     border: 1px solid #a3e2e7;
+    overflow: auto;
 }
 
 .login-header {
@@ -83,7 +84,7 @@
 
 
 .options-container {
-    width: 20%;
+    width: 29%;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -95,7 +96,7 @@
 }
 
 .password{
-    width: 200px;
+    width: 300px;
 }
 
 
@@ -151,4 +152,25 @@
 .image-container img {
     width: 90%;
     max-height: 100%;
+}
+
+
+.error-message-failure{
+    text-align: left;
+    margin-top: 15px;
+    margin-left: 25px;
+    font-family:Roboto;
+    font-weight: bold;
+    color: red;
+    font-size: 20px;
+}
+
+.error-message-success{
+    text-align: left;
+    margin-top: 15px;
+    margin-left: 25px;
+    font-family:Roboto;
+    font-weight: bold;
+    color:green;
+    font-size: 20px;
 }

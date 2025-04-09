@@ -67,6 +67,56 @@ const employeeRoutes = (db) => {
     }
   })
 
+
+  router.post('/signup',async(req,res) => {
+    const {name,email,phoneNumber,designation,department} = req.body;
+
+    if(name === "" || email === "" || phoneNumber === "" ||  designation === "" || department === ""){
+      res.status(400).json({error:"All Fields must be filled"})
+    }
+    
+    try {
+
+      const emailQuery = 'SELECT * FROM employee WHERE email = ?';
+      const existingEmail = await db.get(emailQuery, [email]);
+
+      if (existingEmail) {
+        return res.status(400).json({ error: "Email is already in use" });
+      }
+
+      const phoneQuery = 'SELECT * FROM employee WHERE phoneNumber = ?';
+      const existingPhoneNumber = await db.get(phoneQuery, [phoneNumber]);
+
+      if (existingPhoneNumber) {
+        return res.status(400).json({ error: "Phone number is already in use" });
+      }
+      
+      const countQuery = 'SELECT COUNT(*) AS count FROM employee WHERE id != 4028';
+      const result = await db.get(countQuery);
+      const totalEmployees = result.count;
+  
+      
+      const newEmployeeId = 1001 + totalEmployees;
+  
+      const insertQuery = `
+        INSERT INTO employee (id, name, email, phoneNumber, designation, department)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `;
+  
+      await db.run(insertQuery, [newEmployeeId, name, email, phoneNumber, designation, department]);
+      const payload = {
+        email
+      }
+      const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: '6h' });
+  
+      res.status(201).json({ message: "Employee successfully added", id:newEmployeeId,token });
+  
+    } catch (error) {
+      res.status(500).json({ error: `DB Error: ${error.message}` });
+    }
+
+  })
+
 return router;
 
 };
