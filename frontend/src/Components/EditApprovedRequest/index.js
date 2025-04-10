@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import './index.css';
 
 const EditApprovedRequest = () => {
     const { tripId } = useParams();
     const location = useLocation();
+    const navigate = useNavigate();
 
     const { currentEmployee, selectedTrip } = location.state || {};
 
@@ -66,10 +67,17 @@ const EditApprovedRequest = () => {
         }
     };
 
+    const handleClose = () => {
+        navigate('/employee');
+    };
+
     return (
         <div className="container-approval">
             <div className="form-container">
-                <h1 className="header">Edit Approved Trip</h1>
+                <div className='row-trip-container'>
+                    <h1 className="header">Edit Approved Trip</h1>
+                    <button type="button" className="trip-close-button" onClick={handleClose}>X</button>
+                </div>
                 <p className="trip-id">TRIP ID: {tripId}</p>
 
                 <div className='row-container'>

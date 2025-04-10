@@ -7,7 +7,7 @@ import { Navigate } from "react-router-dom";
 class ShowAllTrips extends Component {
   state = { allTrips: [], returnToAdmin: false, isModifyTrip: false, respectiveTrip: {}
             ,respectiveEmployee:{},tripImages:[],currentImageIndex: 0,chatInput: '',
-            filteredTrips: [],aiSearch:false }
+            filteredTrips: [],aiSearch:false,currentPage:1,tripsPerPage:10 }
 
   fetchAllTrips = async () => {
     try {
@@ -22,6 +22,21 @@ class ShowAllTrips extends Component {
 
   componentDidMount() {
     this.fetchAllTrips();
+  }
+
+  getCurrentTrips = () => {
+    const {currentPage,tripsPerPage,filteredTrips,allTrips} = this.state
+    const filteredAllTrips = this.getFilteredTrips(allTrips);
+    const modifiedTrips = filteredTrips.length === 0 ? filteredAllTrips : filteredTrips
+
+    const indexOfLastTrip = currentPage * tripsPerPage;
+    const indexOfFirstTrip = indexOfLastTrip - tripsPerPage;
+
+    return modifiedTrips.slice(indexOfFirstTrip,indexOfLastTrip)
+  }
+
+  paginate = (pageNumber) => {
+    this.setState({currentPage:pageNumber})
   }
 
   convertDateFormat(dateString) {
@@ -280,10 +295,16 @@ onCloseAisearch = () => {
 
   render() {
     const { allTrips, returnToAdmin, isModifyTrip, respectiveTrip,tripImages,currentImageIndex,chatInput,
-      filteredTrips,aiSearch } = this.state;
+      filteredTrips,aiSearch,currentPage,tripsPerPage } = this.state;
     const filteredAllTrips = this.getFilteredTrips(allTrips);
     const { trip_id,client_place, start_date, end_date, status,employee_id,initial_amount,total_expense,balance_settlement } = respectiveTrip;
-    const modifiedAllTrips = filteredTrips.length === 0 ? filteredAllTrips : filteredTrips;
+    const totalTrips = filteredTrips.length === 0 ? filteredAllTrips.length : filteredTrips.length;
+
+    const pageNumbers = [];
+
+    for(let i = 1; i <= Math.ceil(totalTrips/tripsPerPage);i++){
+      pageNumbers.push(i)
+    }
 
     if (returnToAdmin) {
       return <Navigate to="/admin" />;
@@ -410,7 +431,7 @@ onCloseAisearch = () => {
                 </tr>
               </thead>
               <tbody>
-                {modifiedAllTrips.map((trip) => (
+                {this.getCurrentTrips().map((trip) => (
                   <tr className="trip-table-row" key={trip.trip_id}>
                     <td>{trip.trip_id}</td>
                     <td>{trip.employee_id}</td>
@@ -428,6 +449,17 @@ onCloseAisearch = () => {
                 ))}
               </tbody>
             </table>
+            <div className="pagination-container">
+              {pageNumbers.map(number => (
+                <button
+                  key={number}
+                  className={`pagination-button ${currentPage === number ? 'active' : ''}`}
+                  onClick={() => this.paginate(number)}
+                >
+                  {number}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       )
