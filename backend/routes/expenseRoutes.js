@@ -1,4 +1,4 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
 
@@ -178,4 +178,4 @@ const expressRoutes = (db) => {
     return router;
 }
 
-module.exports = expressRoutes;
+export default expressRoutes
