@@ -67,6 +67,51 @@ const employeeRoutes = (db) => {
     }
   })
 
+
+  router.post('/signup', async (req, res) => {
+    const { name, email, phoneNumber, designation, department } = req.body;
+  
+    if (!name || !email || !phoneNumber || !designation || !department) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+  
+    try {
+      
+      const existingUserQuery = 'SELECT * FROM employee WHERE email = ?';
+      const existingUser = await db.get(existingUserQuery, [email]);
+  
+      if (existingUser) {
+        return res.status(400).json({ error: 'User already exists with this email' });
+      }
+  
+      
+      const countQuery = 'SELECT COUNT(*) as count FROM employee';
+      const countResult = await db.get(countQuery);
+      const newId = 1001 + countResult.count;
+  
+      
+      const insertQuery = `
+        INSERT INTO employee (id, name, email, phoneNumber, designation, department)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `;
+      await db.run(insertQuery, [newId, name, email, phoneNumber, designation, department]);
+  
+      
+      const payload = { email };
+      const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: '6h' });
+  
+      res.status(201).json({
+        message: 'Signup successful',
+        token,
+      });
+  
+    } catch (error) {
+      res.status(500).json({ error: `DB Error: ${error.message}` });
+    }
+  });
+  
+  
+
 return router;
 
 };

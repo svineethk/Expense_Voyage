@@ -7,7 +7,7 @@ import "./index.css";
 
 class Login extends Component {
   state = { name:"",email: "", password: "",PhoneNumber:"", isSignUp: false,showPasswordText:false 
-    ,successMessage:'',errorMessage:'',designation:'',deparment:'',redirectToHome:false,redirectToAdmin:false};
+    ,successMessage:'',errorMessage:'',designation:'',department:'',redirectToHome:false,redirectToAdmin:false};
 
   onLoginFormSubmit = async (event) => {
     const {email,password} = this.state;
@@ -59,7 +59,7 @@ class Login extends Component {
   }
 
   onChangeDepartment = event => {
-    this.setState({deparment:event.target.value})
+    this.setState({department:event.target.value})
   }
 
   onChangeDesgination = event => {
@@ -68,30 +68,30 @@ class Login extends Component {
 
 
   onSignupSubmit = async (event) => {
-    const {name,email,PhoneNumber,designation,deparment} = this.state
+    const {name,email,PhoneNumber,designation,department} = this.state
     event.preventDefault()
 
     try{
-      const response = await axios.post('http://localhost:5000/employee/signup/', {
+      const response = await axios.post('http://localhost:5000/employee/signup', {
         name,
         email,
-        PhoneNumber,
+        phoneNumber: PhoneNumber,
         designation,
-        deparment
-      })
+        department
+      });
 
       const result = await response.data;
       if(result.message){
         localStorage.setItem('jwtToken',result.token);
         this.setState({successMessage:result.message,errorMessage:"",redirectToHome:true,
-          name:"",email:"",PhoneNumber:"",designation:"",deparment:""
+          name:"",email:"",PhoneNumber:"",designation:"",department:""
         })
       }else{
-        this.setState({errorMessage:result.error,name:"",email:"",PhoneNumber:"",designation:"",deparment:""})
+        this.setState({errorMessage:result.error,name:"",email:"",PhoneNumber:"",designation:"",department:""})
       }
     }catch(error){
       this.setState({errorMessage:error.message,successMessage:"",
-        name:"",email:"",PhoneNumber:"",designation:"",deparment:""
+        name:"",email:"",PhoneNumber:"",designation:"",department:""
       })
     }
 
@@ -136,7 +136,7 @@ class Login extends Component {
 
 
   signupContainer = () => {
-    const {name,email,PhoneNumber,designation,deparment,successMessage,errorMessage}= this.state
+    const {name,email,PhoneNumber,designation,department,successMessage,errorMessage}= this.state
 
     return(
       <>
@@ -169,7 +169,7 @@ class Login extends Component {
         <div className="input-container">
           <FcDepartment  className="icon" />
           <input type="text" placeholder="Department" 
-            className="input-field" value={deparment}
+            className="input-field" value={department}
             onChange={this.onChangeDepartment} />
         </div>  
         <button type="submit" className="login-btn">Sign Up</button>
