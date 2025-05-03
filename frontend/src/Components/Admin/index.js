@@ -13,6 +13,7 @@ import {
     Pie,
     Cell
   } from "recharts"
+import ThemeToggle from "../ThemeToggle";
 
 class Admin extends Component {
     state = {dashboardData:[],monthlyTripData:[],tripStatusData:[],employeeTripData:[],tripRequestData:[],isLoading:false
@@ -206,7 +207,10 @@ class Admin extends Component {
             <div className="employee-container">
                 <nav className="nav-container">
                     <h1 className="employee-header">Welcome Boss</h1>
-                    <button type="button" className="logout-button" onClick={this.onClickLogout}>Logout</button>
+                    <div className="nav-row-container">
+                         <ThemeToggle/>
+                         <button type="button" className="logout-button" onClick={this.onClickLogout}>Logout</button>
+                    </div>
                 </nav>
                 <div className="admin-header">
                     <h1 className="header-admin">Admin Dashboard</h1>

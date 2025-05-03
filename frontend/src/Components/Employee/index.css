@@ -214,7 +214,6 @@ li{
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -222,7 +221,8 @@ li{
   }
   
   .popup-content {
-    background: white;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     padding: 30px;
     width: 50%;
     height: 75%;
@@ -301,6 +301,8 @@ li{
     padding: 10px;
     margin-top: 10px;
     font-family: 'Courier New', Courier, monospace;
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
 .paragraph{
@@ -332,7 +334,8 @@ li{
 .approved-trips-container {
     width: 90%;
     margin: 20px auto;
-    background: #fff;
+    background-color: var(--bg-color) !important;
+    color: #ffffff !important;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -355,12 +358,16 @@ li{
     border-collapse: collapse;
     border-radius: 8px;
     overflow: hidden;
+    background-color: var(--bg-color);
+    color: var(--text-special-color);
   }
   
   .trip-table th,
   .trip-table td {
     padding: 12px 15px;
     text-align: left;
+    background-color: var(--bg-color);
+    color: var(--text-special-color);
   }
   
   .trip-table th {
