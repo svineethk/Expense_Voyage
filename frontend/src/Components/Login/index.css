@@ -11,7 +11,8 @@
     align-items: center;
     height: 100vh;
     width: 100vw;
-    background: linear-gradient(to right, #eef9fc, #f7fef6);
+    background: var(--bg-gradient);
+    background-size: cover;
 }
 
 
@@ -21,7 +22,8 @@
     align-items: center;
     width: 75%;
     height: 75%;
-    background: #ffffff;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     border-radius: 15px;
     box-shadow: 0px 4px 15px rgba(127, 218, 134, 0.1);
     padding: 20px;
@@ -35,10 +37,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
 .form-container {
-    background: #fff;
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
@@ -53,7 +58,7 @@
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 25px;
-    color: #333;
+    color: var(--text-color);
 }
 
 
@@ -65,6 +70,9 @@
     border-radius: 8px;
     padding: 15px;
     margin-top: 40px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    
 }
 
 .input-container .icon {
@@ -77,9 +85,9 @@
     width: 100%;
     border: none;
     outline: none;
-    background: transparent;
     font-size: 16px;
-    color: #333;
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
 
@@ -97,10 +105,8 @@
 
 .password{
     width: 300px;
+    color: var(--text-color);
 }
-
-
-
 
 .login-btn {
     width: 70%;
@@ -144,6 +150,7 @@
 
 .image-container {
     width: 50%;
+    height: 99%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -151,7 +158,10 @@
 
 .image-container img {
     width: 90%;
-    max-height: 100%;
+    max-height: 90%;
+    border-radius: 30px;    
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #a3e2e7;
 }
 
 

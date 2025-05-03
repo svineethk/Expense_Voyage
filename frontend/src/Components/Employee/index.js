@@ -4,6 +4,7 @@ import {jwtDecode} from "jwt-decode";
 import './index.css';
 import axios from "axios";
 import { FaEdit } from "react-icons/fa";
+import ThemeToggle from "../ThemeToggle";
 
 class Employee extends Component {
   state = {
@@ -172,7 +173,10 @@ class Employee extends Component {
       <div className="employee-container">
         <nav className="nav-container">
           <h1 className="employee-header">Welcome {employeeDetails?.name}</h1>
+          <div className="nav-row-container">
+          <ThemeToggle/>
           <button type="button" className="logout-button" onClick={this.onClickLogout}>Logout</button>
+          </div>
         </nav>
 
         <div className="create-trip">

@@ -13,13 +13,15 @@ body{
     width: 100vw;
     display: flex;
     flex-direction: column;
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
 .nav-container{
     height:70px;
     width: 100%;
-    background-color: #2C3E50;
-    color: #ffffff;;
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
     padding: 0 20px;
     display: flex;
     flex-direction: row;
@@ -32,6 +34,20 @@ body{
     font-family: 'Montserrat', sans-serif;
     font-size: 24px;
     font-weight: bold;
+    color: var(--text-color);
+}
+
+.nav-row-container{
+    height: 100%;
+    width: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 40px;
+    padding-left: 40px;
+    background-color: var(--bg-color);
+    color:var(--text-color);
 }
 
 button {
@@ -98,7 +114,8 @@ button {
 .trip-header{
     font-family:'Courier New', Courier, monospace;
     font-size: 30px;
-    color: #333;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     text-align: left;
 }
 
@@ -111,7 +128,8 @@ button {
     flex-wrap: wrap;
     padding: 20px;
     border-radius: 20px;
-    background: linear-gradient(to right, #e3fdfd, #a1c4fd);
+    background: var(--bg-trip-container-gradient);
+    color: var(--text-color);
 }
 
 li{
@@ -121,12 +139,12 @@ li{
 .trip-item {
     height: 280px;
     width: 360px;
-    background-color: lightskyblue;
+    background-color: var(--bg-trip-item);
+    color: var(--text-color);
     margin-right: 40px;
     margin-bottom: 20px;
     padding: 25px;
     border-radius: 15px;
-    color: #ffffff;
     font-family: monospace;
     font-size: 20px;
     display: flex;

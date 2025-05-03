@@ -4,6 +4,7 @@ import { FcDepartment } from "react-icons/fc";
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 import "./index.css";
+import ThemeToggle from "../ThemeToggle";
 
 class Login extends Component {
   state = { name:"",email: "", password: "",PhoneNumber:"", isSignUp: false,showPasswordText:false 
@@ -195,6 +196,7 @@ class Login extends Component {
     
     return (
       <div className="app-container">
+        <ThemeToggle/>
         <div className="login-container">
           <div className="login-form">{isSignUp ? this.signupContainer() : this.loginContainer()}</div>
           <div className="image-container">
