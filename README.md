@@ -1,7 +1,7 @@
 # Expense Voyage
 
 
-Expense Voyage is a MERN stack application integrated with an SQL database, designed to efficiently track and manage employee expenses during client-site assignments. This tool is particularly useful for companies that send employees to client locations for work-related tasks, providing a structured way to handle initial funds and subsequent expense claims for travel, accommodation, food, and other work-related expenditures.
+Expense Voyage is a Full Stack Application integrated with an SQL database, designed to efficiently track and manage employee expenses during client-site assignments. This tool is particularly useful for companies that send employees to client locations for work-related tasks, providing a structured way to handle initial funds and subsequent expense claims for travel, accommodation, food, and other work-related expenditures.
 
 ## 🚀 Features
 **User Authentication:** Secure login and registration system to ensure data privacy.
